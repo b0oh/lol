@@ -6,10 +6,10 @@ _Lol_ — and programming is fun again.
 
 Because the world strongly needs in another programming language.
 
-Little more seriously: the main idea is make metaprogramming in erlang more easy.
+Little more seriously: the main idea is make metaprogramming in erlang more easy.<br>
 It is not about replace _Erlang_, it is about use together.
 
-### Why not LFE?
+### What not LFE?
 
 * Lisp-1
 * Small and clean codebase
@@ -99,13 +99,17 @@ ok
 
 ## Plans
 
-* Full erlang forms support: float, binary, characters, strings with interpolation, etc
+* Full erlang forms support: float, binary, characters, strings with interpolation, records, maps, etc
 * Full erlang syntax support: receive, clauses for functions and lambdas, etc
-* Improve lol forms support: let, def, etc
+* Improve lol forms support: let, do, def, etc
 * Extended importing and name aliasing
 * Macroses
-* deftransform form for providing macroses for erlang from lol
+* ```deftransform``` form for providing macroses for _Erlang_ from _Lol_
+* Translation right in Erlang sources
 * stdlib
+* Write Lol on Lol
+
+It is dedicated to “Let Over Lambda” and “Land of Lisp”.
 
 ---
 
