@@ -33,6 +33,9 @@ Hello, Dima.
 ok
 ```
 
+## Example
+[Lol application example](http://github.com/b0oh/lol_example)
+
 ## Lol language
 
 ### Forms
@@ -45,7 +48,7 @@ ok
 ### Special forms
 
 * List: ```[1 2 3]``` expanding to ```(list 1 2 3)```
-* Tuple: ```{1 2 3}``` exapnding to ```(tuple 1 2 3)```
+* Tuple: ```{1 2 3}``` expanding to ```(tuple 1 2 3)```
 * Quote: ```'(1 2 3)``` expanding to ```(quote (1 2 3))```
 * Define public function:
 ```
