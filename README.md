@@ -9,10 +9,10 @@ Because the world strongly needs in another programming language.
 Little more seriously: the main idea is make metaprogramming in erlang more easy.<br>
 It is not about replace _Erlang_, it is about use together.
 
-### Why not LFE?
+### Why not LFE? Lol has:
 
 * Lisp-1
-* Small and clean codebase
+* Small and clean codebase (for now :))
 
 ### Why not Joxa?
 
