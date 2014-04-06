@@ -9,7 +9,7 @@ Because the world strongly needs in another programming language.
 Little more seriously: the main idea is make metaprogramming in erlang more easy.<br>
 It is not about replace _Erlang_, it is about use together.
 
-### What not LFE?
+### Why not LFE?
 
 * Lisp-1
 * Small and clean codebase
@@ -80,8 +80,8 @@ ok
 * Case:
 ```
 (case (get_coords)
-  {x y} 'ok
-  {x y z} (do (first_expr) (second_expr)))
+  ({x y} 'ok)
+  ({x y z} (do (first_expr) (second_expr))))
 ```
 * Call:
 ```
