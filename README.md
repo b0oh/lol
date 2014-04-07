@@ -4,10 +4,10 @@ _Lol_ — and programming is fun again.
 
 ## Why?
 
-Because the world strongly needs in another programming language.
+Because the world strongly needs another programming language.
 
-Little more seriously: the main idea is make metaprogramming in erlang more easy.<br>
-It is not about replace _Erlang_, it is about use together.
+A little bit more seriously: the main idea is to make metaprogramming in erlang easier.<br>
+It is not about replacing _Erlang_, it is about using the two together.
 
 ### Why not LFE? Lol has:
 
@@ -16,7 +16,7 @@ It is not about replace _Erlang_, it is about use together.
 
 ### Why not Joxa?
 
-* _Joxa_ does not develop anymore and uses code generation to erlang core.
+* _Joxa_ is not developed anymore and it uses code generation for the erlang core.
 
 ## Build
 
