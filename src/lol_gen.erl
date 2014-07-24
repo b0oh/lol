@@ -16,7 +16,7 @@ env([], Env) -> Env;
 env([Expr | Exprs], Env0) ->
     case declare(Expr, Env0) of
         {error, Error} -> {error, Error};
-         Env1 -> env(Exprs, Env1)
+        Env1 -> env(Exprs, Env1)
     end.
 
 
