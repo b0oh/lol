@@ -40,7 +40,9 @@ forms(Exprs, Mod) ->
 
 
 %% 1
-form({fixnum, L, Integer}) -> {integer, L, Integer};
+form({integer, _, _} = Expr) -> Expr;
+%% 1.1
+form({float, _, _} = Expr) -> Expr;
 %% symbol
 form({symbol, L, Symbol}) -> {var, L, Symbol};
 %% "string"

@@ -43,8 +43,8 @@ parse(Bin, L0, Acc) ->
 
 parse_expr(<<C, Rest/binary>>, L) when ?is_space(C) -> parse_expr(Rest, L);
 parse_expr(<<$\n, Rest/binary>>, L) -> parse_expr(Rest, L + 1);
-parse_expr(<<$-, C, Rest/binary>> = Bin, L) when ?is_digit(C) -> parse_fixnum(Rest, L, Bin, 2);
-parse_expr(<<C, Rest/binary>> = Bin, L) when ?is_digit(C) -> parse_fixnum(Rest, L, Bin, 1);
+parse_expr(<<$-, C, Rest/binary>> = Bin, L) when ?is_digit(C) -> parse_number(Rest, L, Bin, 2);
+parse_expr(<<C, Rest/binary>> = Bin, L) when ?is_digit(C) -> parse_number(Rest, L, Bin, 1);
 parse_expr(<<C, _/binary>> = Bin, L) when ?is_symbol_init(C) -> parse_symbol(Bin, L);
 parse_expr(<<$", Bin/binary>>, L) -> parse_string(Bin, L);
 parse_expr(<<$', Bin/binary>>, L) -> parse_quote(Bin, L);
@@ -54,14 +54,31 @@ parse_expr(<<${, Bin/binary>>, L) -> parse_tuple(Bin, L);
 parse_expr(<<C, _/binary>>, L) -> syntax_error(L, {unexpected_char, C}).
 
 
-parse_fixnum(Bin, L, Orig, Bytes) ->
-    Bits = parse_fixnum_bytes(Bin, Bytes) * 8,
-    <<Fixnum:Bits, Rest/binary>> = Orig,
-    {{fixnum, L, binary_to_integer(<<Fixnum:Bits>>)}, L, Rest}.
+parse_number(Bin, L, Orig, Bytes0) ->
+    case parse_number_bytes(Bin, Bytes0, L) of
+        {error, Error} -> {error, Error};
+        {integer, Bytes1} ->
+            Bits = Bytes1 * 8,
+            <<Integer:Bits, Rest/binary>> = Orig,
+            {{integer, L, binary_to_integer(<<Integer:Bits>>)}, L, Rest};
+        {float, Bytes1} ->
+            Bits = Bytes1 * 8,
+            <<Float:Bits, Rest/binary>> = Orig,
+            {{float, L, binary_to_float(<<Float:Bits>>)}, L, Rest}
+    end.
 
-parse_fixnum_bytes(<<C, Rest/binary>>, Bytes) when ?is_digit(C) -> parse_fixnum_bytes(Rest, Bytes + 1);
-parse_fixnum_bytes(<<C, _/binary>>, Bytes) when ?is_delimeter(C) -> Bytes;
-parse_fixnum_bytes(<<>>, Bytes) -> Bytes.
+parse_number_bytes(<<C, Rest/binary>>, Bytes, L) when ?is_digit(C) -> parse_number_bytes(Rest, Bytes + 1, L);
+parse_number_bytes(<<C, _/binary>>, Bytes, _L) when ?is_delimeter(C) -> {integer, Bytes};
+parse_number_bytes(<<$., C, Rest/binary>>, Bytes, L) when ?is_digit(C) ->
+    parse_float_bytes(<<C, Rest/binary>>, Bytes + 1, L);
+parse_number_bytes(<<>>, Bytes, _L) -> {integer, Bytes};
+parse_number_bytes(<<C, _/binary>>, _, L) -> syntax_error(L, {unexpected_char, C}).
+
+parse_float_bytes(<<C, Rest/binary>>, Bytes, L) when ?is_digit(C) -> parse_float_bytes(Rest, Bytes + 1, L);
+parse_float_bytes(<<C, _/binary>>, Bytes, _L) when ?is_delimeter(C) -> {float, Bytes};
+parse_float_bytes(<<>>, Bytes, _L) -> {float, Bytes};
+parse_float_bytes(<<C, _/binary>>, _, L) -> syntax_error(L, {unexpected_char, C}).
+
 
 parse_symbol(Bin, L) ->
     Bits = parse_symbol_bytes(Bin, 0) * 8,
