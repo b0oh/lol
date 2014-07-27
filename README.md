@@ -40,7 +40,8 @@ ok
 
 ### Forms
 
-* Fixnum: ```1```
+* Integer: ```1```
+* Float: ```1.1```
 * Symbol: ```symbol```
 * Simple string: ```"string"```
 * S-expr: ```()```
