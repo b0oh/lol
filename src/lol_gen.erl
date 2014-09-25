@@ -20,9 +20,9 @@ env([Expr | Exprs], Env0) ->
     end.
 
 
-declare({list, _, [{symbol, _, defn}, {symbol, _, Name}, {list, _, Args} | _]}, Env) ->
+declare({list, _, [{symbol, _, defn}, {symbol, _, Name}, {list, _, [{symbol, _, list} | Args]} | _]}, Env) ->
     add_binding(#fn{name = Name, arity = length(Args), export = true}, Env);
-declare({list, _, [{symbol, _, 'defn-'}, {symbol, _, Name}, {list, _, Args} | _]}, Env) ->
+declare({list, _, [{symbol, _, 'defn-'}, {symbol, _, Name}, {list, _, [{symbol, _, list} | Args]} | _]}, Env) ->
     add_binding(#fn{name = Name, arity = length(Args)}, Env);
 declare({eof, _}, St) ->
     St;
@@ -53,21 +53,21 @@ form({list, L, [{symbol, _, list} | Exprs]}) -> list_form(fun form/1, L, Exprs);
 form({list, L, [{symbol, _, tuple} | Exprs]}) -> {tuple, L, seq(Exprs)};
 %% 'quoted
 form({quote, _, Expr}) -> quote_form(Expr);
-%% (defn[-] name (args ...) body)
-form({list, L, [{symbol, _, Def}, {symbol, _, Name}, {list, _, Args} | Body]}) when Def =:=  defn;
+%% (defn[-] name [args ...] body)
+form({list, L, [{symbol, _, Def}, {symbol, _, Name}, {list, _, [{symbol, _, list} | Args]} | Body]}) when Def =:=  defn;
                                                                                     Def =:= 'defn-' ->
     {function, L, Name, length(Args), [{clause, L, [form(Arg) || Arg <- Args], [], seq(Body)}]};
-%% (lambda (args ...) body)
-form({list, L, [{symbol, _, lambda}, {list, _, Args} | Body]}) ->
+%% (fn [args ...] body)
+form({list, L, [{symbol, _, fn}, {list, _, [{symbol, _, list} | Args]} | Body]}) ->
     {'fun', L, {clauses, [{clause, L, [form(Arg) || Arg <- Args], [], seq(Body)}]}};
 %% (= x y)
 %form({list, L, [{symbol, _, '='}, Left, Right]}) ->
 %    {match, L, form(Left), form(Right)};
-%% (let (bindings) (do body))
-form({list, _, [{symbol, _, 'let'}, {list, _, Bindings}, {list, _, [{symbol, _, do} | Body]}]}) ->
+%% (let [bindings] (do body))
+form({list, _, [{symbol, _, 'let'}, {list, _, [{symbol, _, list} | Bindings]}, {list, _, [{symbol, _, do} | Body]}]}) ->
     matches(Bindings) ++ seq(Body);
-%% (let (bindings) body)
-form({list, _, [{symbol, _, 'let'}, {list, _, Bindings}, Body]}) ->
+%% (let [bindings] body)
+form({list, _, [{symbol, _, 'let'}, {list, _, [{symbol, _, list} | Bindings]}, Body]}) ->
     matches(Bindings) ++ [form(Body)];
 %% (case expr (match body))
 form({list, _, [{symbol, L, 'case'}, Expr | Clauses]}) ->

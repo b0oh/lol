@@ -53,27 +53,27 @@ ok
 * Quote: ```'(1 2 3)``` expanding to ```(quote (1 2 3))```
 * Define public function:
 ```
-(defn public (arg1 arg2)
+(defn public [arg1 arg2]
   (expr1)
   (expr2))
 ```
 * Define private function:
 ```
-  (defn- private (arg1 arg2)
+  (defn- private [arg1 arg2]
     (expr1)
     (expr2))
 ```
-* Lambda: ```(lambda (arg1 arg2) (expr1) (expr2))```
+* Lambda: ```(fn [arg1 arg2] (expr1) (expr2))```
 * Let with pattern matching:
 ```
-  (let ({'ok file} (file:read_file "number")
-        number (binary_to_integer file))
+  (let [{'ok file} (file:read_file "number")
+        number (binary_to_integer file)]
     (io:format "Number is: ~p~n" [number]))
 ```
 *  Let with sequence in body:
 ```
-  (let ({'ok file} (file:read_file("number"))
-        number (binary_to_integer file))
+  (let [{'ok file} (file:read_file "number")
+        number (binary_to_integer file)]
     (do
       (file:write_file "number_copy" (integer_to_binary number))
       (io:format "Number is: ~p~n" [number])))
@@ -95,7 +95,7 @@ ok
 ```
 (func)
 (mod:func)
-((lambda (x) x) "some")
+((fn [x] x) "some")
 ```
 
 ## Plans
