@@ -138,4 +138,4 @@ show({list,   _, [Expr]})     -> [$(, show(Expr), $)];
 show({list,   _, [Expr | _]}) -> [$(, show(Expr), " ...)"];
 show({eof,    _})             -> "eof".
 
-error_before(Expr) -> lol_parse:syntax_error(line(Expr), {error_before, show(Expr)}).
+error_before(Expr) -> lol_parser:syntax_error(line(Expr), {error_before, show(Expr)}).

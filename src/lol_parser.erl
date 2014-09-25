@@ -1,4 +1,4 @@
--module(lol_parse).
+-module(lol_parser).
 -export([parse/1, format_error/1, syntax_error/2]).
 
 -define(is_digit(C), C >= $0, C =< $9).

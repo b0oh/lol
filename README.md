@@ -28,7 +28,7 @@ $ echo '(defn hello [name] (io:format "Hello, ~s.~n" [name]))' > simple.lol
 $ erl -pa ebin
 ```
 ```erl
-1> lol_compile:file("simple.lol", "ebin/simple.beam").
+1> lol_compiler:file("simple.lol", "ebin/simple.beam").
 {ok,simple,[]}
 2> simple:hello("Dima").
 Hello, Dima.
