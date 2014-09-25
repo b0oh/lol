@@ -1,4 +1,4 @@
--module(lol_compile).
+-module(lol_compiler).
 -export([file/2]).
 -export([read/1, parse/1, gen/1, compile/1, save/1]).
 
@@ -40,7 +40,7 @@ read(#st{source = Source, errors = Es} = St) ->
     end.
 
 parse(#st{data = Bin, errors = Es} = St) ->
-    case lol_parse:parse(Bin) of
+    case lol_parser:parse(Bin) of
         {ok, Exprs}    -> St#st{data = Exprs};
         {error, Error} -> St#st{errors = [Error | Es]}
     end.
